@@ -1,22 +1,22 @@
 package shop.infrastructure.services
 
-import shop.algebras.{ Orders, PaymentClient, ShoppingCart }
-import shop.domains.cart._
-import shop.domains.order._
-import shop.domains.payment._
-import shop.retries.{ Retriable, Retry }
-
 import scala.concurrent.duration._
 
-import cats.data.NonEmptyList
+import shop.algebras.{ Orders, PaymentClient, ShoppingCart }
+import shop.domains.auth.UserId
+import shop.domains.cart._
+import shop.domains.checkout._
+import shop.domains.order._
+import shop.domains.payment._
+import shop.infrastructure.effects._
+import shop.retries.{ Retriable, Retry }
+
 import cats.MonadThrow
+import cats.data.NonEmptyList
 import cats.syntax.all._
 import org.typelevel.log4cats.Logger
 import retry.RetryPolicy
 import squants.market.Money
-
-import shop.infrastructure.effects._
-import shop.domains.auth.UserId
 
 final case class Checkout[F[_]: Background: Logger: MonadThrow: Retry](
     payments: PaymentClient[F],
@@ -27,7 +27,8 @@ final case class Checkout[F[_]: Background: Logger: MonadThrow: Retry](
 
   /**
     *
-    * Using adaptError, we transform the error given by the payment client (re-thrown after our retry function gives up)
+    * Using adaptError, we transform the error given by the payment client
+    * (re-thrown after our retry function gives up)
     * into our custom PaymentError.
     */
   private def processPayment(in: Payment): F[PaymentId] =
@@ -56,7 +57,7 @@ final case class Checkout[F[_]: Background: Logger: MonadThrow: Retry](
         case _ =>
           Logger[F].error(
             s"Failed to create order for Payment: ${paymentId.show}. Rescheduling as a background action"
-          ) *>
+          ) >>
             Background[F].schedule(bgAction(fa), 1.hour)
       }
 

@@ -1,6 +1,7 @@
 package shop.domains
 
 import shop.domains.auth.UserId
+import shop.domains.checkout.Card
 
 import squants.market.Money
 
@@ -10,7 +11,4 @@ object payment {
       total: Money,
       card: Card
   )
-
-  // dumb so it compiles
-  case class Card()
 }

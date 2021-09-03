@@ -8,17 +8,19 @@ import shop.domains.cart.Quantity
 import shop.domains.item.ItemId
 
 import derevo.cats.show
+import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import io.estatico.newtype.macros.newtype
 import squants.Money
 
 object order {
-  @derive(show)
+  @derive(decoder, encoder, show)
   @newtype case class OrderId(uuid: UUID)
 
-  @derive(show)
+  @derive(decoder, encoder, show)
   @newtype case class PaymentId(uuid: UUID)
 
+  @derive(decoder, encoder)
   case class Order(
       id: OrderId,
       pid: PaymentId,
@@ -34,6 +36,7 @@ object order {
     def cause: String
   }
 
+  @derive(show)
   case class OrderError(cause: String)   extends OrderOrPaymentError
   case class PaymentError(cause: String) extends OrderOrPaymentError
 }

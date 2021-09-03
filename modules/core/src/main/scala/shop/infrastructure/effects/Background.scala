@@ -15,6 +15,6 @@ object Background {
   implicit def bgInstance[F[_]](implicit S: Supervisor[F], T: Temporal[F]): Background[F] =
     new Background[F] {
       def schedule[A](fa: F[A], duration: FiniteDuration): F[Unit] =
-        S.supervise(T.sleep(duration) *> fa).void
+        S.supervise(T.sleep(duration) >> fa).void
     }
 }
