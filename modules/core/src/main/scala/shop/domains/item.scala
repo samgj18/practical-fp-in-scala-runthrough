@@ -6,11 +6,16 @@ import shop.domains.brand.{ Brand, BrandId }
 import shop.domains.cart._
 import shop.domains.category.{ Category, CategoryId }
 
-import derevo.cats.show
+import derevo.cats._
 import derevo.circe.magnolia._
 import derevo.derive
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.auto._
+import eu.timepit.refined.string.{ Uuid, ValidBigDecimal }
+import eu.timepit.refined.types.string.NonEmptyString
+import io.circe.refined._
 import io.estatico.newtype.macros.newtype
-import squants.Money
+import squants.market._
 
 object item {
 
@@ -35,6 +40,15 @@ object item {
   @derive(decoder, encoder)
   @newtype case class ItemDescription(value: String)
 
+  @derive(decoder, encoder)
+  @newtype case class ItemNameParam(value: NonEmptyString)
+  @derive(decoder, encoder)
+  @newtype case class ItemDescriptionParam(value: NonEmptyString)
+  @derive(decoder, encoder)
+  @newtype case class PriceParam(value: String Refined ValidBigDecimal)
+  @derive(decoder, encoder)
+  @newtype case class ItemIdParam(value: String Refined Uuid)
+
   /**
     * This decoding and encoding depend on the package file on domains which
     * teach the compiler how to interpret the macros via moneyDecoder and moneyEncoder
@@ -50,6 +64,36 @@ object item {
   ) {
     def cart(q: Quantity): CartItem =
       CartItem(this, q)
+  }
+
+  @derive(decoder, encoder)
+  case class CreateItemParam(
+      name: ItemNameParam,
+      description: ItemDescriptionParam,
+      price: PriceParam,
+      brandId: BrandId,
+      categoryId: CategoryId
+  ) {
+    def toDomain: CreateItem =
+      CreateItem(
+        ItemName(name.value),
+        ItemDescription(description.value),
+        USD(BigDecimal(price.value)),
+        brandId,
+        categoryId
+      )
+  }
+
+  @derive(decoder, encoder)
+  case class UpdateItemParam(
+      id: ItemIdParam,
+      price: PriceParam
+  ) {
+    def toDomain: UpdateItem =
+      UpdateItem(
+        ItemId(UUID.fromString(id.value)),
+        USD(BigDecimal(price.value))
+      )
   }
 
   case class CreateItem(

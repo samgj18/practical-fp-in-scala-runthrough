@@ -1,5 +1,8 @@
 package shop.domains
 
+import scala.util.control.NoStackTrace
+
+import shop.domains.auth._
 import shop.domains.item.{ Item, ItemId }
 
 import derevo.cats._
@@ -8,8 +11,6 @@ import derevo.derive
 import io.circe.{ Decoder, Encoder }
 import io.estatico.newtype.macros.newtype
 import squants.market.Money
-import scala.util.control.NoStackTrace
-import shop.domains.auth._
 
 object cart {
 

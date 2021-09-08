@@ -2,16 +2,22 @@ package shop.domains
 
 import java.util.UUID
 
-import io.estatico.newtype.macros.newtype
+import scala.util.control.NoStackTrace
+
+import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
-import derevo.circe.magnolia.decoder
-import derevo.circe.magnolia.encoder
+import eu.timepit.refined.auto._
+import eu.timepit.refined.types.string.NonEmptyString
+import io.circe.refined._
+import io.estatico.newtype.macros.newtype
+import derevo.cats.show
 
 object auth {
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   @newtype case class UserId(value: UUID)
   @newtype case class JwtToken(value: String)
+  @derive(decoder, encoder, show)
   @newtype case class UserName(value: String)
   @newtype case class Password(value: String)
   @newtype case class EncrytedPassword(value: String)
@@ -22,7 +28,40 @@ object auth {
       password: EncrytedPassword
   )
 
+  @derive(decoder, encoder)
+  @newtype
+  case class UserNameParam(value: NonEmptyString) {
+    def toDomain: UserName = UserName(value.toLowerCase)
+  }
+
+  @derive(decoder, encoder)
+  @newtype
+  case class PasswordParam(value: NonEmptyString) {
+    def toDomain: Password = Password(value)
+  }
+
+  case class UserNotFound(username: UserName)    extends NoStackTrace
+  case class UserNameInUse(username: UserName)   extends NoStackTrace
+  case class InvalidPassword(username: UserName) extends NoStackTrace
+  case object UnsupportedOperation               extends NoStackTrace
+
+  @derive(show)
   case class User(id: UserId, name: UserName)
 
   @newtype case class CommonUser(value: User)
+  @derive(show)
+  @newtype
+  case class AdminUser(value: User)
+  @derive(decoder, encoder)
+  case class CreateUser(
+      username: UserNameParam,
+      password: PasswordParam
+  )
+
+  @derive(decoder, encoder)
+  case class LoginUser(
+      username: UserNameParam,
+      password: PasswordParam
+  )
+
 }
