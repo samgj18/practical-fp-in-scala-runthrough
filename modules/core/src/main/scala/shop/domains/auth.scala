@@ -4,13 +4,13 @@ import java.util.UUID
 
 import scala.util.control.NoStackTrace
 
+import derevo.cats.show
 import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import eu.timepit.refined.auto._
 import eu.timepit.refined.types.string.NonEmptyString
 import io.circe.refined._
 import io.estatico.newtype.macros.newtype
-import derevo.cats.show
 
 object auth {
 

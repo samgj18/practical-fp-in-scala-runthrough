@@ -48,7 +48,7 @@ object checkout {
       decoderOf[Int, Size[3]].map(CardCVV(_))
   }
 
-  @derive(decoder)
+  @derive(decoder, encoder)
   case class Card(
       name: CardName,
       number: CardNumber,
