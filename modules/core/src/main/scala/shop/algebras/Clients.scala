@@ -20,18 +20,21 @@ trait PaymentClient[F[_]] {
 object PaymentClient {
   def make[F[_]: JsonDecoder: MonadCancelThrow](
       client: Client[F]
-  ): PaymentClient[F] = new PaymentClient[F] with Http4sClientDsl[F] {
-
-    val baseUri = "http: //localhost:8080/api/v1"
-
-    def process(payment: Payment): F[PaymentId] = {
-      Uri
-        .fromString(baseUri + "/payments")
-        .liftTo[F]
-        .flatMap { uri =>
-          client.fetchAs[PaymentId](POST(payment, uri))
+  ): PaymentClient[F] =
+    new PaymentClient[F] with Http4sClientDsl[F] {
+      val baseUri = "http: //localhost:8080/api/v1"
+      def process(payment: Payment): F[PaymentId] =
+        Uri.fromString(baseUri + "/payments").liftTo[F].flatMap { uri =>
+          client.run(POST(payment, uri)).use { resp =>
+            resp.status match {
+              case Status.Ok | Status.Conflict =>
+                resp.asJsonDecode[PaymentId]
+              case st =>
+                PaymentError(
+                  Option(st.reason).getOrElse("unknown")
+                ).raiseError[F, PaymentId]
+            }
+          }
         }
     }
-
-  }
 }

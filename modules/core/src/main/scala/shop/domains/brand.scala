@@ -4,6 +4,7 @@ import java.util.UUID
 
 import shop.infrastructure.ext.http4s.queryParam
 import shop.infrastructure.ext.http4s.refined._
+import shop.infrastructure.optics.uuid
 
 import derevo.cats._
 import derevo.circe.magnolia.{ decoder, encoder }
@@ -16,7 +17,8 @@ import io.circe.{ Decoder, Encoder }
 import io.estatico.newtype.macros.newtype
 
 object brand {
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, eqv, show, uuid)
+  @newtype
   case class BrandId(value: UUID)
 
   @derive(decoder, encoder)
