@@ -3,10 +3,9 @@ package shop.domains
 import shop.domains.auth.UserId
 import shop.domains.checkout.Card
 
-import squants.market.Money
+import derevo.circe.magnolia.{decoder, encoder}
 import derevo.derive
-import derevo.circe.magnolia.decoder
-import derevo.circe.magnolia.encoder
+import squants.market.Money
 
 object payment {
   @derive(decoder, encoder)

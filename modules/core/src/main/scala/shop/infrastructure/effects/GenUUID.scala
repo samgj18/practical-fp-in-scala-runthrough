@@ -1,6 +1,7 @@
 package shop.infrastructure.effects
 
 import java.util.UUID
+
 import cats.ApplicativeThrow
 import cats.effect.Sync
 

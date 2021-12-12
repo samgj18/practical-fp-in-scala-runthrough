@@ -34,3 +34,5 @@ project/project/project/metals.sbt
 .vscode/settings.json
 .vscode/launch.json
 .gitignore
+.lh/
+.vscode/

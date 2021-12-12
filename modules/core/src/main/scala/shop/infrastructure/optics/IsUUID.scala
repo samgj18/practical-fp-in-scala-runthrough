@@ -2,8 +2,9 @@ package shop.infrastructure.optics
 
 import java.util.UUID
 
-import monocle.Iso
 import shop.infrastructure.ext.derevo.Derive
+
+import monocle.Iso
 
 trait IsUUID[A] {
   def _UUID: Iso[UUID, A]

@@ -1,6 +1,7 @@
 package shop.domains
 
 import java.util.UUID
+
 import scala.util.control.NoStackTrace
 
 import shop.domains.auth._
