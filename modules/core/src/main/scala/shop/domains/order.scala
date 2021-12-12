@@ -6,24 +6,27 @@ import scala.util.control.NoStackTrace
 
 import shop.domains.cart.Quantity
 import shop.domains.item.ItemId
+import shop.infrastructure.optics.uuid
 
-import derevo.cats.show
+import derevo.cats._
 import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import io.estatico.newtype.macros.newtype
-import squants.Money
+import squants.market.Money
 
 object order {
-  @derive(decoder, encoder, show)
-  @newtype case class OrderId(uuid: UUID)
+  @derive(decoder, encoder, eqv, show, uuid)
+  @newtype
+  case class OrderId(value: UUID)
 
-  @derive(decoder, encoder, show)
-  @newtype case class PaymentId(uuid: UUID)
+  @derive(decoder, encoder, eqv, show, uuid)
+  @newtype
+  case class PaymentId(value: UUID)
 
   @derive(decoder, encoder)
   case class Order(
       id: OrderId,
-      pid: PaymentId,
+      paymentId: PaymentId,
       items: Map[ItemId, Quantity],
       total: Money
   )
@@ -36,7 +39,7 @@ object order {
     def cause: String
   }
 
-  @derive(show)
+  @derive(eqv, show)
   case class OrderError(cause: String)   extends OrderOrPaymentError
   case class PaymentError(cause: String) extends OrderOrPaymentError
 }

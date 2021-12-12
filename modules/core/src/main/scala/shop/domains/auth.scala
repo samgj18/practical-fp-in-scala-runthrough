@@ -4,7 +4,7 @@ import java.util.UUID
 
 import scala.util.control.NoStackTrace
 
-import derevo.cats.show
+import derevo.cats._
 import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import eu.timepit.refined.auto._
@@ -39,6 +39,10 @@ object auth {
   case class PasswordParam(value: NonEmptyString) {
     def toDomain: Password = Password(value)
   }
+
+  @derive(decoder, encoder, eqv, show)
+  @newtype
+  case class EncryptedPassword(value: String)
 
   case class UserNotFound(username: UserName)    extends NoStackTrace
   case class UserNameInUse(username: UserName)   extends NoStackTrace
