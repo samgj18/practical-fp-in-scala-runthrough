@@ -1,9 +1,9 @@
 package shop.infrastructure.http.routes.admin
 
 import shop.algebras.Items
-import shop.domains.auth._
 import shop.domains.item._
 import shop.infrastructure.ext.http4s.refined._
+import shop.infrastructure.http.auth.user._
 
 import cats.MonadThrow
 import cats.syntax.all._

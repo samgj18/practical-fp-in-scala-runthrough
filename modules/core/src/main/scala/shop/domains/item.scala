@@ -5,6 +5,7 @@ import java.util.UUID
 import shop.domains.brand.{ Brand, BrandId }
 import shop.domains.cart._
 import shop.domains.category.{ Category, CategoryId }
+import shop.infrastructure.optics.uuid
 
 import derevo.cats._
 import derevo.circe.magnolia._
@@ -33,11 +34,11 @@ object item {
     * A type class that provides a conversion from a string used as a JSON key to a
     * value of type `A`.
     */
-  @derive(decoder, encoder, keyEncoder, keyDecoder, show)
+  @derive(decoder, encoder, keyEncoder, keyDecoder, show, uuid)
   @newtype case class ItemId(value: UUID)
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, eqv, show)
   @newtype case class ItemName(value: String)
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, eqv, show)
   @newtype case class ItemDescription(value: String)
 
   @derive(decoder, encoder)

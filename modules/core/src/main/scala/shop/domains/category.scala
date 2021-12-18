@@ -2,6 +2,9 @@ package shop.domains
 
 import java.util.UUID
 
+import shop.infrastructure.optics.uuid
+
+import derevo.cats._
 import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import eu.timepit.refined.auto._
@@ -11,13 +14,13 @@ import io.circe.refined._
 import io.estatico.newtype.macros.newtype
 
 object category {
-  @derive(decoder, encoder)
-  case class CategoryId(value: UUID)
+  @derive(decoder, encoder, uuid, eqv, show)
+  @newtype case class CategoryId(value: UUID)
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, eqv, show)
   @newtype case class CategoryName(value: String)
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, eqv, show)
   case class Category(uuid: CategoryId, name: CategoryName)
 
   @newtype

@@ -1,10 +1,10 @@
 package shop.infrastructure.http.routes.secured
 
-import shop.domains.auth._
 import shop.domains.cart._
 import shop.domains.checkout._
 import shop.domains.order._
 import shop.infrastructure.ext.http4s.refined._
+import shop.infrastructure.http.auth.user._
 import shop.infrastructure.services.Checkout
 
 import cats.MonadThrow

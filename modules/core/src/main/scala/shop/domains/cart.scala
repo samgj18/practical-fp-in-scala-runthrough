@@ -13,7 +13,7 @@ import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import io.circe.{ Decoder, Encoder }
 import io.estatico.newtype.macros.newtype
-import squants.market.Money
+import squants.market.{ Money, USD }
 
 object cart {
 
@@ -42,7 +42,9 @@ object cart {
   }
 
   @derive(decoder, encoder)
-  case class CartItem(item: Item, quantity: Quantity)
+  case class CartItem(item: Item, quantity: Quantity) {
+    def subTotal: Money = USD(item.price.amount * quantity.value)
+  }
 
   @derive(decoder, encoder)
   case class CartTotal(items: List[CartItem], total: Money)

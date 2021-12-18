@@ -1,7 +1,7 @@
 package shop.infrastructure.http.routes.auth
 
 import shop.algebras.Auth
-import shop.domains.auth._
+import shop.infrastructure.http.auth.user._
 
 import cats.Monad
 import cats.syntax.all._

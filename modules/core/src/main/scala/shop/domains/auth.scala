@@ -1,8 +1,11 @@
 package shop.domains
 
 import java.util.UUID
+import javax.crypto.Cipher
 
 import scala.util.control.NoStackTrace
+
+import shop.infrastructure.optics.uuid
 
 import derevo.cats._
 import derevo.circe.magnolia.{ decoder, encoder }
@@ -14,20 +17,19 @@ import io.estatico.newtype.macros.newtype
 
 object auth {
 
-  @derive(decoder, encoder, show)
+  @derive(decoder, encoder, show, uuid)
   @newtype case class UserId(value: UUID)
   @newtype case class JwtToken(value: String)
   @derive(decoder, encoder, show)
-  @newtype case class UserName(value: String)
-  @newtype case class Password(value: String)
+  @newtype
+  case class UserName(value: String)
+
+  @derive(decoder, encoder, eqv, show)
+  @newtype
+  case class Password(value: String)
+
+  @derive(decoder, encoder, eqv, show)
   @newtype case class EncrytedPassword(value: String)
-
-  case class UserWithPassword(
-      id: UserId,
-      name: UserName,
-      password: EncrytedPassword
-  )
-
   @derive(decoder, encoder)
   @newtype
   case class UserNameParam(value: NonEmptyString) {
@@ -44,18 +46,17 @@ object auth {
   @newtype
   case class EncryptedPassword(value: String)
 
+  @newtype
+  case class EncryptCipher(value: Cipher)
+
+  @newtype
+  case class DecryptCipher(value: Cipher)
+
   case class UserNotFound(username: UserName)    extends NoStackTrace
   case class UserNameInUse(username: UserName)   extends NoStackTrace
   case class InvalidPassword(username: UserName) extends NoStackTrace
   case object UnsupportedOperation               extends NoStackTrace
 
-  @derive(show)
-  case class User(id: UserId, name: UserName)
-
-  @newtype case class CommonUser(value: User)
-  @derive(show)
-  @newtype
-  case class AdminUser(value: User)
   @derive(decoder, encoder)
   case class CreateUser(
       username: UserNameParam,

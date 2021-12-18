@@ -1,8 +1,8 @@
 package shop.infrastructure.http.routes.secured
 
 import shop.algebras.ShoppingCart
-import shop.domains.auth._
 import shop.domains.cart._
+import shop.infrastructure.http.auth.user._
 import shop.infrastructure.http.vars._
 
 import cats.Monad

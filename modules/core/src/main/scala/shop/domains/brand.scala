@@ -21,13 +21,13 @@ object brand {
   @newtype
   case class BrandId(value: UUID)
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, eqv, show)
   case class BrandName(value: String) {
     def toBrand(brandId: BrandId): Brand =
       Brand(brandId, this)
   }
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, eqv, show)
   case class Brand(uuid: BrandId, name: BrandName)
 
   @derive(queryParam, show)

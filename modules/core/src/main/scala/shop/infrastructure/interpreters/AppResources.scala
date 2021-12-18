@@ -5,7 +5,8 @@ import shop.infrastructure.config.types._
 import cats.effect.std.Console
 import cats.effect.{ Concurrent, Resource }
 import cats.syntax.all._
-import dev.profunktor.redis4cats.RedisCommands
+import dev.profunktor.redis4cats.effect.MkRedis
+import dev.profunktor.redis4cats.{ Redis, RedisCommands }
 import eu.timepit.refined.auto._
 import fs2.io.net.Network
 import natchez.Trace.Implicits.noop
@@ -25,8 +26,8 @@ sealed abstract class AppResources[F[_]](
 )
 
 object AppResources {
-  def make[F[_]: Concurrent: Logger: Console: Network](
-      postgres: Resource[F, Session[F]]
+  def make[F[_]: Concurrent: Console: Logger: MkHttpClient: MkRedis: Network](
+      cfg: AppConfig
   ): Resource[F, AppResources[F]] = {
 
     def checkPostgresConnection(
@@ -57,6 +58,13 @@ object AppResources {
         )
         .evalTap(checkPostgresConnection)
 
-    ???
+    def mkRedisResource(c: RedisConfig): Resource[F, RedisCommands[F, String, String]] =
+      Redis[F].utf8(c.uri.value).evalTap(checkRedisConnection)
+
+    (
+      MkHttpClient[F].newEmber(cfg.httpClientConfig),
+      mkPostgreSqlResource(cfg.postgreSQL),
+      mkRedisResource(cfg.redis)
+    ).parMapN(new AppResources[F](_, _, _) {})
   }
 }

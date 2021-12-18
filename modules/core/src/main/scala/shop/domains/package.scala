@@ -1,5 +1,6 @@
 package shop
 
+import cats.kernel.Monoid
 import cats.syntax.contravariant._
 import cats.{ Eq, Show }
 import dev.profunktor.auth.jwt.JwtToken
@@ -32,4 +33,12 @@ trait OrphanInstances {
   implicit val tokenEncoder: Encoder[JwtToken] =
     Encoder.forProduct1("access_token")(_.value)
 
+  implicit val moneyMonoid: Monoid[Money] =
+    new Monoid[Money] {
+      def empty: Money = USD(0)
+      def combine(
+          x: Money,
+          y: Money
+      ): Money = x + y
+    }
 }
