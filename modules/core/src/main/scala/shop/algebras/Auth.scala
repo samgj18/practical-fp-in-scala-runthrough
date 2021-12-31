@@ -1,11 +1,10 @@
 package shop.algebras
 
+import shop.algebras.{ Crypto, Tokens }
 import shop.domains._
 import shop.domains.auth._
 import shop.infrastructure.config.types._
 import shop.infrastructure.http.auth.user._
-import shop.algebras.Crypto
-import shop.algebras.Tokens
 
 import cats._
 import cats.syntax.all._

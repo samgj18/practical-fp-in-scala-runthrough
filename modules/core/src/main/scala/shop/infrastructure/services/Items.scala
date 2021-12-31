@@ -10,7 +10,6 @@ import shop.infrastructure.sql.codecs._
 
 import cats.effect._
 import cats.syntax.all._
-import fs2.Stream
 import skunk._
 import skunk.implicits._
 
@@ -22,19 +21,15 @@ object Items {
       import ItemSQL._
 
       // In the book we'll see how to retrieve results in chunks using stream or cursor
-      def findAll: Stream[F, Item] =
-        for {
-          s <- Stream.resource(postgres)
-          p <- Stream.resource(s.prepare(selectAll))
-          t <- p.stream(Void, 1024)
-        } yield t
+      def findAll: F[List[Item]] =
+        postgres.use(_.execute(selectAll))
 
-      def findBy(brand: BrandName): Stream[F, Item] =
-        for {
-          s <- Stream.resource(postgres)
-          p <- Stream.resource(s.prepare(selectByBrand))
-          t <- p.stream(brand, 1024)
-        } yield t
+      def findBy(brand: BrandName): F[List[Item]] =
+        postgres.use { session =>
+          session.prepare(selectByBrand).use { ps =>
+            ps.stream(brand, 1024).compile.toList
+          }
+        }
 
       def findById(itemId: ItemId): F[Option[Item]] =
         postgres.use { session =>

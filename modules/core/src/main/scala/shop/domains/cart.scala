@@ -41,12 +41,12 @@ object cart {
       Decoder.forProduct1("items")(Cart.apply)
   }
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   case class CartItem(item: Item, quantity: Quantity) {
     def subTotal: Money = USD(item.price.amount * quantity.value)
   }
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   case class CartTotal(items: List[CartItem], total: Money)
 
   @derive(decoder, encoder)

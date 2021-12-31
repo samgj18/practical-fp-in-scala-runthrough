@@ -2,10 +2,12 @@ package shop.domains
 
 import shop.infrastructure.ext.refined._
 
+import derevo.cats._
 import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import eu.timepit.refined.api._
 import eu.timepit.refined.boolean.And
+import eu.timepit.refined.cats._
 import eu.timepit.refined.collection.Size
 import eu.timepit.refined.string.{ MatchesRegex, ValidInt }
 import io.circe.Decoder
@@ -21,10 +23,10 @@ object checkout {
   type CardExpirationPred = String Refined (Size[4] And ValidInt) /** ValidInt: Predicate that checks if a `String` is a parsable `Int`. */
   type CardCVVPred        = Int Refined Size[3]
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   @newtype case class CardName(value: CardNamePred)
 
-  @derive(encoder)
+  @derive(encoder, show)
   @newtype case class CardNumber(value: CardNumberPred)
 
   object CardNumber {
@@ -32,7 +34,7 @@ object checkout {
       decoderOf[Long, Size[16]].map(CardNumber(_))
   }
 
-  @derive(encoder)
+  @derive(encoder, show)
   @newtype case class CardExpiration(value: CardExpirationPred)
 
   object CardExpiration {
@@ -40,7 +42,7 @@ object checkout {
       decoderOf[String, Size[4] And ValidInt].map(CardExpiration(_))
   }
 
-  @derive(encoder)
+  @derive(encoder, show)
   @newtype case class CardCVV(value: CardCVVPred)
 
   object CardCVV {
@@ -48,7 +50,7 @@ object checkout {
       decoderOf[Int, Size[3]].map(CardCVV(_))
   }
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   case class Card(
       name: CardName,
       number: CardNumber,

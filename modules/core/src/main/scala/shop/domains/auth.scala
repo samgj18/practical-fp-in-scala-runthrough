@@ -17,10 +17,10 @@ import io.estatico.newtype.macros.newtype
 
 object auth {
 
-  @derive(decoder, encoder, show, uuid)
+  @derive(decoder, encoder, show, uuid, eqv)
   @newtype case class UserId(value: UUID)
   @newtype case class JwtToken(value: String)
-  @derive(decoder, encoder, show)
+  @derive(decoder, encoder, show, eqv)
   @newtype
   case class UserName(value: String)
 

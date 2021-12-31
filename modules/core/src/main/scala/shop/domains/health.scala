@@ -1,5 +1,6 @@
 package shop.domains
 
+import derevo.cats.eqv
 import derevo.circe.magnolia.encoder
 import derevo.derive
 import io.circe.Encoder
@@ -16,6 +17,7 @@ object health {
   @derive(encoder)
   case class AppStatus(redis: RedisStatus, postgres: PostgresStatus)
 
+  @derive(eqv)
   sealed trait Status
   object Status {
     case object Okay        extends Status

@@ -12,6 +12,7 @@ import derevo.circe.magnolia._
 import derevo.derive
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.auto._
+import eu.timepit.refined.cats._
 import eu.timepit.refined.string.{ Uuid, ValidBigDecimal }
 import eu.timepit.refined.types.string.NonEmptyString
 import io.circe.refined._
@@ -41,11 +42,11 @@ object item {
   @derive(decoder, encoder, eqv, show)
   @newtype case class ItemDescription(value: String)
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   @newtype case class ItemNameParam(value: NonEmptyString)
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   @newtype case class ItemDescriptionParam(value: NonEmptyString)
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   @newtype case class PriceParam(value: String Refined ValidBigDecimal)
   @derive(decoder, encoder)
   @newtype case class ItemIdParam(value: String Refined Uuid)
@@ -54,7 +55,7 @@ object item {
     * This decoding and encoding depend on the package file on domains which
     * teach the compiler how to interpret the macros via moneyDecoder and moneyEncoder
     */
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   case class Item(
       uuid: ItemId,
       name: ItemName,
@@ -67,7 +68,7 @@ object item {
       CartItem(this, q)
   }
 
-  @derive(decoder, encoder)
+  @derive(decoder, encoder, show)
   case class CreateItemParam(
       name: ItemNameParam,
       description: ItemDescriptionParam,

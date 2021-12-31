@@ -2,6 +2,7 @@ package shop.algebras
 
 import shop.domains.order._
 import shop.domains.payment._
+import shop.infrastructure.config.types
 
 import cats.effect.MonadCancelThrow
 import cats.syntax.all._
@@ -19,12 +20,12 @@ trait PaymentClient[F[_]] {
 
 object PaymentClient {
   def make[F[_]: JsonDecoder: MonadCancelThrow](
+      cfg: types.PaymentConfig,
       client: Client[F]
   ): PaymentClient[F] =
     new PaymentClient[F] with Http4sClientDsl[F] {
-      val baseUri = "http: //localhost:8080/api/v1"
       def process(payment: Payment): F[PaymentId] =
-        Uri.fromString(baseUri + "/payments").liftTo[F].flatMap { uri =>
+        Uri.fromString(cfg.uri.value + "/payments").liftTo[F].flatMap { uri =>
           client.run(POST(payment, uri)).use { resp =>
             resp.status match {
               case Status.Ok | Status.Conflict =>
