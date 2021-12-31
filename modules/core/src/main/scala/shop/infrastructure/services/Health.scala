@@ -2,6 +2,7 @@ package shop.infrastructure.services
 
 import scala.concurrent.duration._
 
+import shop.algebras.HealthCheck
 import shop.domains.health._
 
 import cats.effect._
@@ -11,10 +12,6 @@ import dev.profunktor.redis4cats.RedisCommands
 import skunk._
 import skunk.codec.all._
 import skunk.implicits._
-
-trait HealthCheck[F[_]] {
-  def status: F[AppStatus]
-}
 
 object HealthCheck {
   def make[F[_]: Temporal](

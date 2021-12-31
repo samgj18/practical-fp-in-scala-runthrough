@@ -2,7 +2,7 @@ package shop.infrastructure.ext.ciris
 
 import shop.infrastructure.ext.derevo.Derive
 
-import _root_.ciris.ConfigDecoder
+import ciris.ConfigDecoder
 
 object configDecoder extends Derive[Decoder.Id]
 

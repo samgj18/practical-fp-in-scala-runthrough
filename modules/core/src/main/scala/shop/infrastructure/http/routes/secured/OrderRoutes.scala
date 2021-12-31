@@ -10,7 +10,7 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.server.{ AuthMiddleware, Router }
 import org.http4s.{ AuthedRoutes, HttpRoutes }
 
-final case class OrderRoute[F[_]: Monad](
+final case class OrderRoutes[F[_]: Monad](
     orders: Orders[F]
 ) extends Http4sDsl[F] {
   private[routes] val prefixPath = "/orders"

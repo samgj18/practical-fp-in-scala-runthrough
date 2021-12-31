@@ -12,6 +12,7 @@ import derevo.circe.magnolia.{ decoder, encoder }
 import derevo.derive
 import eu.timepit.refined.auto._
 import eu.timepit.refined.types.string.NonEmptyString
+import io.circe.Decoder
 import io.circe.refined._
 import io.estatico.newtype.macros.newtype
 
@@ -68,5 +69,13 @@ object auth {
       username: UserNameParam,
       password: PasswordParam
   )
+
+  @newtype
+  case class ClaimContent(uuid: UUID)
+
+  object ClaimContent {
+    implicit val jsonDecoder: Decoder[ClaimContent] =
+      Decoder.forProduct1("uuid")(ClaimContent.apply)
+  }
 
 }
