@@ -18,7 +18,7 @@
 To spin up locally (on Mac) run the following commands:
 
 ```shell
-  docker-compose up -d
+  docker-compose up -d &&
 
   export DEBUG=false &&
   export SC_ACCESS_TOKEN_SECRET_KEY=5h0pp1ng_k4rt &&
@@ -27,7 +27,7 @@ To spin up locally (on Mac) run the following commands:
   export SC_ADMIN_USER_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjogIjAwNGI0NDU3LTcxYzMtNDQzOS1hMWIyLTAzODIwMjYzYjU5YyJ9.L97BnPScSAKY-BLkYu8G_n8h1U4LDOURUen14O22hD4 &&
   export SC_PASSWORD_SALT=06grsnxXG0d*Pj496p6fuA*o &&
   export SC_APP_ENV=test &&
-  export SC_POSTGRES_PASSWORD=my-password
+  export SC_POSTGRES_PASSWORD=my-password &&
 
   sbt reStart
 ```
