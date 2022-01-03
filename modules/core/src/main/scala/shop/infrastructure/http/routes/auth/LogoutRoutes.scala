@@ -15,12 +15,12 @@ final case class LogoutRoutes[F[_]: Monad](auth: Auth[F]) extends Http4sDsl[F] {
   private val httpRoutes: AuthedRoutes[CommonUser, F] =
     AuthedRoutes.of {
 
-      /**
-        * traverse_ ->
-        * This method is primarily useful when `G[_]` represents an action
-        * or effect, and the specific `A` aspect of `G[A]` is not otherwise
-        * needed.
-        */
+      /*
+       * traverse_ ->
+       * This method is primarily useful when `G[_]` represents an action
+       * or effect, and the specific `A` aspect of `G[A]` is not otherwise
+       * needed.
+       */
       case authRequest @ POST -> Root / "logout" as user =>
         AuthHeaders
           .getBearerToken(authRequest.req)

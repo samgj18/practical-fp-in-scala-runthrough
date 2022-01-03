@@ -1,9 +1,9 @@
 package shop.http.clients
 
-import shop.algebras.PaymentClient
+import shop.infrastructure.config.types.{ PaymentConfig, PaymentURI }
 import shop.domains.order.PaymentError
 import shop.generators._
-import shop.infrastructure.config.types.{ PaymentConfig, PaymentURI }
+import shop.algebras.PaymentClient
 
 import cats.effect.IO
 import eu.timepit.refined.auto._
