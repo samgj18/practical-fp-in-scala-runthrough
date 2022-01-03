@@ -51,7 +51,3 @@ sbt it:test
 docker-compose down
 
 ```
-
-```
-
-```
