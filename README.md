@@ -17,8 +17,9 @@
 
 To spin up locally (on Mac) run the following commands:
 
-- `docker-compose up`
-- ```shell
+```shell
+  docker-compose up -d
+
   export DEBUG=false &&
   export SC_ACCESS_TOKEN_SECRET_KEY=5h0pp1ng_k4rt &&
   export SC_JWT_SECRET_KEY=-*5h0pp1ng_k4rt*- &&
@@ -27,9 +28,9 @@ To spin up locally (on Mac) run the following commands:
   export SC_PASSWORD_SALT=06grsnxXG0d*Pj496p6fuA*o &&
   export SC_APP_ENV=test &&
   export SC_POSTGRES_PASSWORD=my-password
-  ```
 
-- `sbt reStart`
+  sbt reStart
+```
 
 ## Tests
 
@@ -48,10 +49,6 @@ To run Integration Tests we need to run both `PostgreSQL` and `Redis`:
 docker-compose up
 sbt it:test
 docker-compose down
-
-```
-
-```
 
 ```
 
