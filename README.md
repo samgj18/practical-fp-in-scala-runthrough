@@ -13,8 +13,6 @@
 - The HTTP layer shows the client and the different routes.
 - At the very end, we have both the modules and the entry point to the application.
 
-**For more information go to [Gabriel's Volpe guide](https://github.com/gvolpe/pfps-shopping-cart)**
-
 ## Run
 
 To spin up locally (on Mac) run the following commands:
@@ -30,6 +28,7 @@ To spin up locally (on Mac) run the following commands:
   export SC_APP_ENV=test &&
   export SC_POSTGRES_PASSWORD=my-password
   ```
+
 - `sbt reStart`
 
 ## Tests
@@ -51,3 +50,9 @@ sbt it:test
 docker-compose down
 
 ```
+
+```
+
+```
+
+**For more information go to [Gabriel's Volpe guide](https://github.com/gvolpe/pfps-shopping-cart)**
