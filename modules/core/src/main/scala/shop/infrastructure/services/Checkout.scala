@@ -80,3 +80,4 @@ final case class Checkout[F[_]: Background: Logger: MonadThrow: Retry](
     }
   }
 }
+
